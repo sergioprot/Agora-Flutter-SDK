@@ -2269,7 +2269,7 @@ class Metadata {
   ///
   /// The buffer address of the sent or received Metadata.
   ///
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   Uint8List? buffer;
 
   ///
