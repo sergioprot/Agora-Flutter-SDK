@@ -6,7 +6,8 @@ description: Demonstrates how to use the agora_rtc_engine plugin.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 environment:
-  sdk: '>=2.12.0 <3.0.0'
+  sdk: '>=3.0.0 <4.0.0'
+  flutter: '>=3.29.2'
 
 dependencies:
   flutter:
@@ -22,10 +23,10 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.2
+  cupertino_icons: ^1.0.6
 
-  permission_handler: ^8.3.0
-  path_provider: ^2.0.8
+  permission_handler: ^11.3.0
+  path_provider: ^2.1.2
 
 dev_dependencies:
   integration_test:
@@ -34,7 +35,7 @@ dev_dependencies:
     sdk: flutter
 
   pigeon: ^1.0.7
-  flutter_lints: ^1.0.0
+  flutter_lints: ^3.0.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
