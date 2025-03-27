@@ -173,19 +173,53 @@ class AgoraRtcEnginePlugin : FlutterPlugin, MethodCallHandler, EventChannel.Stre
   }
 
   override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
+    rtcChannelPlugin.onDetachedFromEngine(binding)
     methodChannel.setMethodCallHandler(null)
     eventChannel.setStreamHandler(null)
+    irisRtcEngine.destroy()
   }
 
   override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
-    callApiMethodCallHandler.onMethodCall(call, result)
+    when (call.method) {
+      "createTextureRender" -> {
+        result.notImplemented()
+        return
+      }
+      "destroyTextureRender" -> {
+        result.notImplemented()
+        return
+      }
+      "getAssetAbsolutePath" -> {
+        getAssetAbsolutePath(call, result)
+        return
+      }
+      else -> {
+        callApiMethodCallHandler.onMethodCall(call, result)
+      }
+    }
+  }
+
+  private fun getAssetAbsolutePath(call: MethodCall, result: Result) {
+    call.arguments<String>()?.let {
+      val assetKey = binding?.flutterAssets?.getAssetFilePathByName(it)
+      try {
+        applicationContext.assets.openFd(assetKey!!).close()
+        result.success("/assets/$assetKey")
+      } catch (e: Exception) {
+        result.error(e.javaClass.simpleName, e.message, e.cause)
+      }
+      return@getAssetAbsolutePath
+    }
+    result.error(IllegalArgumentException::class.simpleName ?: "IllegalArgumentException", "The parameter should not be null", null)
   }
 
   override fun onListen(arguments: Any?, events: EventChannel.EventSink?) {
     eventSink = events
+    irisRtcEngine.setEventHandler(EventHandler(eventSink))
   }
 
   override fun onCancel(arguments: Any?) {
+    irisRtcEngine.setEventHandler(null)
     eventSink = null
   }
 }
